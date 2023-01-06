@@ -24,7 +24,11 @@ const SearchPage = () => {
   return (
     <Container>
       <Logo src={pokemonLogo} width={200} />
-      <FilterDropdown label="REGION" items={regionDropdownItems} />
+      <Row>
+        <Col>
+          <FilterDropdown label="REGION" items={regionDropdownItems} />
+        </Col>
+      </Row>
     </Container>
   );
 };

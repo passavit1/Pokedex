@@ -1,57 +1,21 @@
 import { Dropdown, Menu } from '@atomic';
 
-const Mockmenu = [
-  {
-    key: '1',
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        1st menu item
-      </a>
-    )
-  },
-  {
-    key: '2',
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.aliyun.com"
-      >
-        2nd menu item (disabled)
-      </a>
-    ),
-    disabled: true
-  },
-  {
-    key: '3',
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.luohanacademy.com"
-      >
-        3rd menu item (disabled)
-      </a>
-    ),
-    disabled: true
-  },
-  {
-    key: '4',
-    danger: true,
-    label: 'a danger item'
-  }
-];
+const getTitle = (item) => {
+  if (item?.title) return item?.title;
+  if (item?.label) return item?.label;
+  if (item?.value) return item?.value;
 
-const DropdownMenu = () => {
+  return 'N/A';
+};
+
+const DropdownMenu = ({ value, items, onItemSelect }) => {
+  const title = getTitle(value);
+
   const menu = () => {
-    return <Menu items={Mockmenu} />;
+    return <Menu onItemSelect={onItemSelect} items={items} />;
   };
 
-  return <Dropdown title="select" menu={menu} />;
+  return <Dropdown title={title} menu={menu} />;
 };
 
 export default DropdownMenu;

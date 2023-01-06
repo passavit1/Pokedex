@@ -5,7 +5,8 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@atomic': path.resolve(__dirname, 'src/components/atomic'),
-      '@utils': path.resolve(__dirname, 'src/utils')
+      '@utils': path.resolve(__dirname, 'src/utils'),
+      '@images': path.resolve(__dirname, 'src/assets/images')
     }
   }
 };

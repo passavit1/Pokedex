@@ -1,3 +1,5 @@
+import { filter } from 'lodash';
+
 const regions = [
   {
     name: 'Kanto',
@@ -63,6 +65,30 @@ const types = [
   'water'
 ];
 
-const sortby = ['ID', 'Name'];
+const sortby = ['Id', 'Name'];
 
-export { regions, types, sortby };
+const filterByType = (pokemon = {}, filterType = '') => {
+  const pokemonTypes = pokemon?.types?.map((i) => i?.type?.name) || [];
+
+  if (!pokemonTypes || !pokemonTypes.includes(filterType)) return false;
+
+  return true;
+};
+
+const filterBySearch = (pokemon = {}, filterSearch = '') => {
+  const pokemonName = pokemon?.name;
+
+  return pokemonName.toLowerCase().includes(filterSearch);
+};
+
+const sortingBy = (sortBy) => {
+  if (sortBy === 'Id') {
+    return (a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0);
+  }
+
+  if (sortBy === 'Name') {
+    return (a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0);
+  }
+};
+
+export { regions, types, sortby, filterByType, filterBySearch, sortingBy };

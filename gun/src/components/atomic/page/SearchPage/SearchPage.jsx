@@ -1,13 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'antd';
-import { pokemonInfo } from '@/utils';
+import { Row, Col, Spin } from 'antd';
+import { filter } from 'lodash';
 
 import { Logo, FilterDropdown, Search, PokemonCard } from '@atomic';
+import { pokemonApiV2 } from '@utils';
 
 import pokemonLogo from '@/assets/images/pokedex.png';
 
-import { regions, types, sortby } from './helper';
+import {
+  regions,
+  types,
+  sortby,
+  filterByType,
+  filterBySearch,
+  sortingBy
+} from './helper';
 
 const Container = styled.div`
   text-align: center;
@@ -48,12 +56,57 @@ const sortbyDropdownItems = sortby.map((s) => ({
   label: s
 }));
 
-const getFetchPokemonFilters = (filters) => {
-  return filters;
+const getQueryString = (region) => {
+  if (!region) return null;
+
+  let query = new URLSearchParams();
+
+  query.append('limit', region?.limit);
+  query.append('offset', region?.offset);
+
+  return query.toString();
+};
+
+const getPokemonLists = (pokemons = [], filters = {}) => {
+  const { search, type, sortBy } = filters;
+
+  const pokemonLists = filter(pokemons, (pokemon) => {
+    let remove = false;
+
+    if (search && !filterBySearch(pokemon, search)) {
+      remove = true;
+    }
+
+    if (
+      type &&
+      type?.value !== 'all types' &&
+      !filterByType(pokemon, type?.value)
+    ) {
+      remove = true;
+    }
+
+    return !remove;
+  });
+
+  const sortedPokemonList = pokemonLists.sort(sortingBy(sortBy?.value));
+
+  const result = sortedPokemonList.map((pokemon) => ({
+    ...pokemon,
+    image: pokemon?.sprites?.other?.dream_world?.front_default
+  }));
+
+  return result;
+};
+
+const initial = {
+  data: [],
+  loading: false,
+  error: null
 };
 
 const SearchPage = () => {
   const [filters, setFilter] = useState({});
+  const [state, setState] = useState(initial);
 
   const onFilterChange = (key, value) => {
     setFilter((prevFilter) => ({
@@ -62,30 +115,44 @@ const SearchPage = () => {
     }));
   };
 
-  const pokemonFilters = getFetchPokemonFilters(filters);
+  const queryString = getQueryString(filters.region);
+  const pokemonLists = getPokemonLists(state?.data, filters);
 
-  const pokemon = {
-    id: 1,
-    name: 'bulbasaur',
-    types: [
-      {
-        slot: 1,
-        type: {
-          name: 'grass',
-          url: 'https://pokeapi.co/api/v2/type/12/'
-        }
-      },
-      {
-        slot: 2,
-        type: {
-          name: 'poison',
-          url: 'https://pokeapi.co/api/v2/type/4/'
-        }
+  const fetchPokemonList = async () => {
+    if (!queryString) return;
+
+    let pokemonList = [];
+    let fetchError = null;
+
+    setState((prev) => ({
+      ...prev,
+      loading: true
+    }));
+
+    try {
+      const response = await pokemonApiV2.get(`pokemon?${queryString}`);
+      const pokemonResults = response?.data?.results || [];
+
+      for (let pokemon of pokemonResults) {
+        const response = await pokemonApiV2.get(`pokemon/${pokemon?.name}`);
+        const monster = await response?.data;
+        await pokemonList.push(monster);
       }
-    ],
-    images:
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg'
+    } catch (error) {
+      fetchError = error;
+    }
+
+    setState((prev) => ({
+      ...prev,
+      data: pokemonList,
+      loading: false,
+      error: fetchError
+    }));
   };
+
+  useEffect(() => {
+    queryString && fetchPokemonList();
+  }, [queryString]);
 
   return (
     <Container>
@@ -121,13 +188,16 @@ const SearchPage = () => {
         </Col>
       </StyledRow>
       <PokemonContainer>
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
-          <PokemonCard key={x} pokemon={pokemonInfo} />
-        ))}
+        {state.loading ? (
+          <Spin />
+        ) : (
+          [...pokemonLists].map((pokemon) => (
+            <PokemonCard key={pokemon.id} pokemon={pokemon} />
+          ))
+        )}
       </PokemonContainer>
     </Container>
   );
 };
 
-//test
 export default SearchPage;

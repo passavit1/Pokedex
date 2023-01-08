@@ -2,14 +2,17 @@ import styled from 'styled-components';
 import { Card as CardAntd } from 'antd';
 
 const StyledCard = styled(CardAntd)`
-  width: ${(props) => props.width || '20rem'};
-  padding: ${(props) => props.padding || '1rem'};
+  width: ${(props) => props?.width || '20rem'};
+  padding: ${(props) => props?.padding || '1rem'};
   background: ${(props) =>
-    `linear-gradient(${props?.bgColors[0]}, ${props?.bgColors[1]})`};
+    `linear-gradient(${props?.bgColors?.[0]}, ${props?.bgColors?.[1]})`};
 
   .ant-card-body {
     padding: 0;
   }
+
+  border-radius: ${(props) => props?.borderRadius};
+  max-width: ${(props) => props?.maxWidth || '60rem'};
 `;
 
 const Card = ({ left, right, children, width, ...props }) => {

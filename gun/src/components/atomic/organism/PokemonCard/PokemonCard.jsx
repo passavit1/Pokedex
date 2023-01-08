@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-import { Card, Text, IconToggle, Icon } from '@atomic';
-import { colorTypeGradients } from '@utils';
+import { Card, Text, IconToggle } from '@atomic';
+import { getCardColorsByPokemonTypes } from '@utils';
 
 const Container = styled.div`
   margin: 2rem;
@@ -11,20 +12,13 @@ const StyledImage = styled.div`
   padding: 2rem;
 `;
 
-const getCardColors = (pokemonTypes = []) => {
-  const bgColors = colorTypeGradients(
-    pokemonTypes[0]?.type.name,
-    pokemonTypes[1]?.type.name,
-    pokemonTypes.length
-  );
-  return bgColors;
-};
-
 const PokemonCard = ({ pokemon }) => {
+  let navigate = useNavigate();
+
   const pokemonId = <span>#{pokemon.id}</span>;
 
   const handleOnIconInfoClick = () => {
-    console.log('go to info page');
+    navigate(`/pokemon?id=${pokemon.id}`, { replace: true });
   };
 
   const icons = (
@@ -38,7 +32,7 @@ const PokemonCard = ({ pokemon }) => {
     </div>
   );
 
-  const bgColors = getCardColors(pokemon?.types);
+  const bgColors = getCardColorsByPokemonTypes(pokemon?.types);
 
   return (
     <Container bgColors={bgColors}>
@@ -51,7 +45,7 @@ const PokemonCard = ({ pokemon }) => {
         hoverable
       >
         <StyledImage>
-          <img src={pokemon.images} width="100%" />
+          <img src={pokemon.image} width="100%" height={'150px'} />
         </StyledImage>
         <Text fontSize="1.2rem">{pokemon.name}</Text>
       </Card>

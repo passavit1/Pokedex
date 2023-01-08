@@ -1,10 +1,16 @@
-import { InfoCircleFilled, DownOutlined, HeartFilled } from '@ant-design/icons';
+import {
+  InfoCircleFilled,
+  DownOutlined,
+  HeartFilled,
+  BackwardFilled
+} from '@ant-design/icons';
 
 const getIcon = (name) => {
   const Icons = {
     arrowDown: DownOutlined,
     info: InfoCircleFilled,
-    heart: HeartFilled
+    heart: HeartFilled,
+    back: BackwardFilled
   };
 
   const icon = Icons[name] || <div />;
@@ -12,10 +18,10 @@ const getIcon = (name) => {
   return icon;
 };
 
-const Icon = ({ name, size, ...props }) => {
+const Icon = ({ name, size, style, ...props }) => {
   const Icon = getIcon(name);
 
-  return <Icon size={size} {...props} />;
+  return <Icon style={{ ...style, fontSize: size }} {...props} />;
 };
 
 export default Icon;

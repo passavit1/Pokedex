@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'antd';
+import { pokemonInfo } from '@/utils';
 
 import { Logo, FilterDropdown, Search, PokemonCard } from '@atomic';
 
@@ -121,7 +122,7 @@ const SearchPage = () => {
       </StyledRow>
       <PokemonContainer>
         {[1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
-          <PokemonCard key={x} pokemon={pokemon} />
+          <PokemonCard key={x} pokemon={pokemonInfo} />
         ))}
       </PokemonContainer>
     </Container>

@@ -8,6 +8,10 @@ const StyledDiv = styled.div`
   flex-direction: column;
   align-items: center;
 
+  .ant-typography {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
   .dropdown-wrapper {
     margin-top: 1rem;
 

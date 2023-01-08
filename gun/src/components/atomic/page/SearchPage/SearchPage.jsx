@@ -9,8 +9,6 @@ import pokemonLogo from '@/assets/images/pokedex.png';
 
 import { regions, types, sortby } from './helper';
 
-import { regions, types, sortby } from './helper';
-
 const Container = styled.div`
   text-align: center;
   width: 90%;
@@ -121,7 +119,12 @@ const SearchPage = () => {
             onChange={(v) => onFilterChange('search', v)}
           />
         </Col>
-      </Row>
+      </StyledRow>
+      <PokemonContainer>
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
+          <PokemonCard key={x} pokemon={pokemonInfo} />
+        ))}
+      </PokemonContainer>
     </Container>
   );
 };

@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'antd';
+import { pokemonInfo } from '@/utils';
 
 import { Logo, FilterDropdown, Search, PokemonCard } from '@atomic';
 
 import pokemonLogo from '@/assets/images/pokedex.png';
+
+import { regions, types, sortby } from './helper';
 
 import { regions, types, sortby } from './helper';
 
@@ -118,12 +121,7 @@ const SearchPage = () => {
             onChange={(v) => onFilterChange('search', v)}
           />
         </Col>
-      </StyledRow>
-      <PokemonContainer>
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
-          <PokemonCard key={x} pokemon={pokemon} />
-        ))}
-      </PokemonContainer>
+      </Row>
     </Container>
   );
 };

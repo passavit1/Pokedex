@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { InfoPage, SearchPage } from '@atomic';
+import { InfoPage, SearchPage, LoginPage } from '@atomic';
 
 function App() {
   return (
@@ -7,6 +7,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SearchPage />} />
         <Route path="pokemon" element={<InfoPage />} />
+        <Route path="login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );

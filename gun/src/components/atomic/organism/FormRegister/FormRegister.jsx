@@ -20,11 +20,11 @@ const Form = styled.div`
   }
 `;
 
-const FormRegister = ({ onSetStatePage }) => {
-  const [username, setUsername] = useState('');
+const FormRegister = ({ onSetStatePage, onRegister }) => {
+  const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [fname, setfname] = useState('');
-  const [lname, setlname] = useState('');
+  const [firstName, setfname] = useState('');
+  const [lastName, setlname] = useState('');
 
   return (
     <div>
@@ -54,11 +54,23 @@ const FormRegister = ({ onSetStatePage }) => {
         <Search
           placeholder="password"
           label="password"
+          type="password"
           onChange={(v) => {
             setPassword(v);
           }}
         />
-        <Button>REGISTER</Button>
+        <Button
+          onClick={() => {
+            onRegister({
+              firstName,
+              lastName,
+              userName,
+              password
+            });
+          }}
+        >
+          REGISTER
+        </Button>
         <div>
           Have a member ?{' '}
           <Link

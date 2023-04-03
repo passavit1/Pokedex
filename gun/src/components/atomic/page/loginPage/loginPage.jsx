@@ -34,6 +34,29 @@ const LoginPage = () => {
     console.log(data);
     const response = await pokemonUser.post(`register`, data);
     console.log(response);
+    if (response.data.success) {
+      setalertData({ data: 'REGISTER SUCCESS', type: 'success' });
+    } else {
+      setalertData({ data: response.data.data, type: 'error' });
+    }
+  };
+
+  const onLogin = async (data) => {
+    console.log(data);
+    const response = await pokemonUser.post(`login`, data);
+    console.log(response);
+    if (response.data.success) {
+      setalertData({ data: 'LOGIN SUCCESS', type: 'success' });
+    } else {
+      setalertData({ data: response.data.data, type: 'error' });
+    }
+  };
+
+  const onClear = () => {
+    setalertData({
+      data: '',
+      type: 'info'
+    });
   };
 
   return (
@@ -44,9 +67,19 @@ const LoginPage = () => {
         </AlertWrapper>
       )}
 
-      {state === 'login' && <FormLogin onSetStatePage={onSetStatePage} />}
+      {state === 'login' && (
+        <FormLogin
+          onSetStatePage={onSetStatePage}
+          onLogin={onLogin}
+          onClear={onClear}
+        />
+      )}
       {state === 'register' && (
-        <FormRegister onSetStatePage={onSetStatePage} onRegister={onRegister} />
+        <FormRegister
+          onSetStatePage={onSetStatePage}
+          onRegister={onRegister}
+          onClear={onClear}
+        />
       )}
     </Wrapper>
   );

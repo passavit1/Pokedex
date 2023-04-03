@@ -20,7 +20,7 @@ const Form = styled.div`
   }
 `;
 
-const FormRegister = ({ onSetStatePage, onRegister }) => {
+const FormRegister = ({ onSetStatePage, onRegister, onClear }) => {
   const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setfname] = useState('');
@@ -35,6 +35,7 @@ const FormRegister = ({ onSetStatePage, onRegister }) => {
           label="first name"
           onChange={(v) => {
             setfname(v);
+            onClear();
           }}
         />
         <Search
@@ -42,6 +43,7 @@ const FormRegister = ({ onSetStatePage, onRegister }) => {
           label="Last name"
           onChange={(v) => {
             setlname(v);
+            onClear();
           }}
         />
         <Search
@@ -49,6 +51,7 @@ const FormRegister = ({ onSetStatePage, onRegister }) => {
           label="username"
           onChange={(v) => {
             setUsername(v);
+            onClear();
           }}
         />
         <Search
@@ -57,8 +60,10 @@ const FormRegister = ({ onSetStatePage, onRegister }) => {
           type="password"
           onChange={(v) => {
             setPassword(v);
+            onClear();
           }}
         />
+
         <Button
           onClick={() => {
             onRegister({
@@ -76,6 +81,7 @@ const FormRegister = ({ onSetStatePage, onRegister }) => {
           <Link
             onClick={() => {
               onSetStatePage('login');
+              onClear();
             }}
           >
             Login Now

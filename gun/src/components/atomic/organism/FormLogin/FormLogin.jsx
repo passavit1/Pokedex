@@ -1,6 +1,7 @@
 import { Logo, Search, Button } from '@atomic';
 import styled from 'styled-components';
 import pokemonLogo from '@/assets/images/pokedex.png';
+import { useState } from 'react';
 
 const Link = styled.span`
   color: blue;
@@ -19,14 +20,39 @@ const Form = styled.div`
   }
 `;
 
-const FormLogin = ({ onSetStatePage }) => {
+const FormLogin = ({ onSetStatePage, onLogin, onClear }) => {
+  const [userName, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <div>
       <Form>
         <Logo src={pokemonLogo} width={200} />
-        <Search placeholder="username" label="username" />
-        <Search placeholder="password" label="password" />
-        <Button>LOGIN</Button>
+        <Search
+          placeholder="username"
+          label="username"
+          onChange={(v) => {
+            setUsername(v);
+            onClear();
+          }}
+        />
+        <Search
+          placeholder="password"
+          label="password"
+          type="password"
+          onChange={(v) => {
+            setPassword(v);
+            onClear();
+          }}
+        />
+        <Button
+          onClick={() => {
+            console.log(userName, password);
+            onLogin({ userName, password });
+          }}
+        >
+          LOGIN
+        </Button>
         <div>
           Not a member ?{' '}
           <Link

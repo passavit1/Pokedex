@@ -17,8 +17,14 @@ const AlertWrapper = styled.div`
   top: 0;
 `;
 
+const Default_Alert = {
+  data: '',
+  type: 'info'
+};
+
 const LoginPage = () => {
   const [state, setState] = useState('login');
+  const [alertData, setalertData] = useState(Default_Alert);
 
   const onSetStatePage = (data) => {
     setState(data);
@@ -32,9 +38,12 @@ const LoginPage = () => {
 
   return (
     <Wrapper>
-      <AlertWrapper>
-        <Alert message="Error Text" type="success" />
-      </AlertWrapper>
+      {alertData.data && (
+        <AlertWrapper>
+          <Alert message={alertData.data} type={alertData.type} />
+        </AlertWrapper>
+      )}
+
       {state === 'login' && <FormLogin onSetStatePage={onSetStatePage} />}
       {state === 'register' && (
         <FormRegister onSetStatePage={onSetStatePage} onRegister={onRegister} />

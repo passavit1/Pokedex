@@ -22,7 +22,7 @@ const Default_Alert = {
   type: 'info'
 };
 
-const LoginPage = ({ setToken }) => {
+const LoginPage = ({ setToken, saveUser }) => {
   const [state, setState] = useState('login');
   const [alertData, setalertData] = useState(Default_Alert);
 
@@ -47,8 +47,9 @@ const LoginPage = ({ setToken }) => {
     console.log(response);
     if (response.data.success) {
       setalertData({ data: 'LOGIN SUCCESS', type: 'success' });
-      console.log(response.data._token);
+
       setToken(response.data._token);
+      saveUser(response.data.data[0].userName);
     } else {
       setalertData({ data: response.data.data, type: 'error' });
     }

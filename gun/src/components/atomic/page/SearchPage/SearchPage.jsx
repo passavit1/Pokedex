@@ -37,6 +37,27 @@ const PokemonContainer = styled.div`
   justify-content: space-around;
 `;
 
+const HeaderContainer = styled.div`
+  position: relative;
+`;
+
+const RightMenu = styled.div`
+  position: absolute;
+  top: 30%;
+  right: 0;
+  display: flex;
+  gap: 3rem;
+`;
+
+const Link = styled.span`
+  color: gray;
+  cursor: pointer;
+
+  &:hover {
+    color: red;
+  }
+`;
+
 const regionDropdownItems = regions.map((r) => ({
   ...r,
   key: r?.name,
@@ -104,7 +125,7 @@ const initial = {
   error: null
 };
 
-const SearchPage = () => {
+const SearchPage = ({ clearToken, user }) => {
   const [filters, setFilter] = useState({});
   const [state, setState] = useState(initial);
 
@@ -156,7 +177,13 @@ const SearchPage = () => {
 
   return (
     <Container>
-      <Logo src={pokemonLogo} width={200} />
+      <HeaderContainer>
+        <Logo src={pokemonLogo} width={200} />
+        <RightMenu>
+          <div>{user}</div>
+          <Link onClick={clearToken}>LOGOUT</Link>
+        </RightMenu>
+      </HeaderContainer>
       <StyledRow>
         <Col xs={24} sm={12} md={6}>
           <FilterDropdown

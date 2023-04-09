@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Row, Col, Spin } from 'antd';
 import { filter } from 'lodash';
+import axios from 'axios';
 
 import { Logo, FilterDropdown, Search, PokemonCard } from '@atomic';
-import { pokemonApiV2 } from '@utils';
+import { pokemonApiV2, pokemonUser, useToken } from '@utils';
 
 import pokemonLogo from '@/assets/images/pokedex.png';
 
@@ -128,6 +129,7 @@ const initial = {
 const SearchPage = ({ clearToken, user }) => {
   const [filters, setFilter] = useState({});
   const [state, setState] = useState(initial);
+  const { token } = useToken();
 
   const onFilterChange = (key, value) => {
     setFilter((prevFilter) => ({
@@ -157,10 +159,39 @@ const SearchPage = ({ clearToken, user }) => {
       for (let pokemon of pokemonResults) {
         const response = await pokemonApiV2.get(`pokemon/${pokemon?.name}`);
         const monster = await response?.data;
-        await pokemonList.push(monster);
+
+        pokemonList.push({ ...monster, score: 0 });
       }
     } catch (error) {
       fetchError = error;
+    }
+
+    try {
+      console.log(`bearer ${token} token `);
+      const response = await pokemonUser.get(`/pokemon/score/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.data?.data) {
+        const pokemonResults = response?.data.data || [];
+        console.log(pokemonList);
+        pokemonResults.forEach((item) => {
+          let indexTarget = pokemonList.findIndex(
+            (el) => el.id == item.pokemon_id
+          );
+          pokemonList[indexTarget] = {
+            ...pokemonList[indexTarget],
+            score: item.score
+          };
+        });
+
+        console.log(pokemonList);
+      }
+    } catch (error) {
+      // fetchError = error;
+      console.log(error, '<<< error');
     }
 
     setState((prev) => ({

@@ -1,6 +1,5 @@
 const axios = require('axios');
 
-// test connection
 axios
   .get('http://localhost:8080/pokemon/score/all', {
     headers: {

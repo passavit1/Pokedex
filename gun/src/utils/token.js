@@ -23,8 +23,6 @@ function useToken() {
       let decoded = jwt_decode(userToken);
       let currentTime = Math.floor(new Date().getTime() / 1000);
 
-      // console.log(decoded.exp - currentTime);
-
       if (decoded.exp - currentTime < 0) {
         window.localStorage.removeItem('token');
         window.localStorage.removeItem('user');

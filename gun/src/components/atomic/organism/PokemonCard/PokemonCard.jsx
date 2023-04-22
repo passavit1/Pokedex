@@ -23,6 +23,7 @@ const PokemonCard = ({ pokemon }) => {
 
   const icons = (
     <div>
+      <Score>{pokemon.score}</Score>
       <IconToggle name="heart" margin={'0 0.3rem 0 0'} />
       <IconToggle
         name="info"
@@ -54,3 +55,8 @@ const PokemonCard = ({ pokemon }) => {
 };
 
 export default PokemonCard;
+
+const Score = styled.span`
+  padding-right: 1rem;
+  font-size: 1rem:
+`;
